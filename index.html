@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What-To-Do</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="title_page">
+      <div id="content">
+        <h1 class="title">To Do List</h1>
+        <div id="nonTitleContent">
+          <div class="text">
+            <ul id="tasks">
+              <li class="entry">
+                <span class="entrytext">Clean my room.</span>
+                <form class="check">
+                  <input
+                    type="checkbox"
+                    class="cbox"
+                    name="cbox"
+                    onclick="handleClick(this)"
+                  />
+                </form>
+              </li>
+            </ul>
+          </div>
+          <form id="form" class="text_box">
+            <!--<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">-->
+            <input
+              type="text"
+              name="input"
+              id="input"
+              placeholder="Enter your first task!"
+              autocomplete="off"
+              class="text"
+            /><!--</a>-->
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

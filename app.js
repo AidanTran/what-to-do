@@ -1,11 +1,14 @@
-const canWidth = window.innerWidth;
-const canHeight = window.innerHeight;
+var canWidth = window.innerWidth;
+var canHeight = window.innerHeight;
 canvas = document.getElementById('canvas');
 canvas.width  = canWidth;
 canvas.height = canHeight;
 const ctx = canvas.getContext('2d');
-var blockerRect = new Blocker(-canWidth/2,-canHeight, "rgb(48, 47, 45)")
+var blockerRect = new Blocker(-698,-canHeight * 2, "rgb(48, 47, 45)")
 
+let isPlay;
+var arrMusic = []
+let currMusic = 0;
 
 var stop = false;
 var frameCount = 0;
@@ -16,8 +19,17 @@ var initEntries = [];
 let trans = false;
 var input = document.getElementById("form");
 
+arrMusic.push('jazz1.mp3');
+arrMusic.push('jazz2.mp3');
+arrMusic.push('jazz3.mp3');
+var audioHTML = document.getElementById('music');
+shuffle(arrMusic);
+
 function startAnimating(fps) {
-    canvas.style.zIndex = "1";
+    canWidth = window.innerWidth + 2;
+    canHeight = window.innerHeight;
+    canvas.width  = canWidth;
+    canvas.height = canHeight;
     fpsInterval = 1000 / fps;
     then = Date.now();
     startTime = then;
@@ -39,7 +51,6 @@ function animate() {
 
     now = Date.now();
     elapsed = now - then;
-    console.log(elapsed);
     // if enough time has elapsed, draw the next frame
 
     if (elapsed > fpsInterval) {
@@ -54,9 +65,8 @@ function animate() {
 
         var xCord = blockerRect.x;
 
-        if (xCord > canWidth*2) {
+        if (xCord > canWidth*1.5) {
             stop = true;
-            canvas.style.zIndex = "0";
             ctx.clearRect(0,0, canWidth, canHeight);
         } else if (xCord > canWidth * .3 && !transCall) {
             transition();
@@ -84,14 +94,14 @@ function Blocker (x,y,c) {
     this.y = y;
     this.c = c;
 
-    this.dx = 50;
+    this.dx = 25;
 
     this.draw = function() {
         ctx.beginPath();
         ctx.fillStyle = this.c;
         ctx.save();
         ctx.rotate(Math.PI/6);
-        ctx.fillRect(this.x,this.y,canWidth/2, canHeight*2)
+        ctx.fillRect(this.x,this.y,698, canHeight*5)
         ctx.restore();
     }
     
@@ -99,6 +109,35 @@ function Blocker (x,y,c) {
         this.x += this.dx
         this.draw();
     }
+}
+
+function editMusic() {
+    if (isPlay) {
+        audioHTML.pause();
+        isPlay = false;
+    } else {
+        audioHTML.play();
+        isPlay = true;
+    }
+    
+}
+
+function volumeUp() {
+    if(audioHTML.volume!= 1) {
+        audioHTML.volume= Math.round((audioHTML.volume+ .1) * 10) / 10;
+    }
+}
+
+function volumeDown() {
+    if(audioHTML.volume!= .1) {
+        audioHTML.volume= Math.round((audioHTML.volume- .1) * 10) / 10;
+    }
+}
+
+function queueNext() {
+    currMusic = (currMusic + 1) % arrMusic.length;
+    audioHTML.src = arrMusic[currMusic];
+    audioHTML.play();
 }
 
 input.addEventListener("submit", function(e) {
@@ -110,7 +149,7 @@ input.addEventListener("submit", function(e) {
         document.getElementById("input").value = "";
         if(!trans) {
             initEntries.push(textMeat);
-            startAnimating(80);
+            startAnimating(60);
         } else if (!transCall) {
             initEntries.push(textMeat);
         }else {
@@ -147,3 +186,20 @@ function handleDblClick(cb) {
     entry.remove();
 }
 
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    audioHTML.src = array[0];
+    return array;
+  }

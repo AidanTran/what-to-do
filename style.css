@@ -14,6 +14,70 @@ body > div {
   position: absolute;
   width: 100vw;
 }
+
+.music {
+  width: 110px;
+  height: 75px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+#play-music-button {
+  height: 65px;
+  width: 65px;
+  position: absolute;
+  right: 0;
+  padding: 0;
+  border-width: 5px;
+}
+
+.volume {
+  border-color: rgb(48, 47, 45);
+  border-style: solid;
+  height: 30px;
+  width: 30px;
+  outline: none;
+  margin: 5px;
+  border-width: 3px;
+}
+
+.volume:active {
+  background-color: rgb(225, 178, 160);
+}
+
+#volumeDown {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+
+.cross {
+  background-color: rgb(48, 47, 45);
+  height: 4px;
+  width: 16px;
+  border-radius: 2px;
+  position: relative;
+  right: 2px;
+}
+
+.crossVert {
+  height: 15px;
+  width: 4px;
+  left: 6.5px;
+  top: -5.5px;
+}
+
+.note {
+  position: absolute;
+  height: 60px;
+  width: 60px;
+  margin: 5px;
+  bottom: 0px;
+  right: 0px;
+  pointer-events: none;
+}
+
 .title {
   font-family: "Pacifico", cursive;
   color: rgb(48, 47, 45);
@@ -35,7 +99,8 @@ body > div {
 
 #canvas {
   position: absolute;
-  z-index: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
 #title_page {

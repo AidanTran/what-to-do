@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>What-To-Do</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="data:," />
   </head>
 
   <body>
@@ -14,20 +15,7 @@
         <h1 class="title">To Do List</h1>
         <div id="nonTitleContent">
           <div class="text">
-            <ul id="tasks">
-              <!--<li class="entry">
-                <span class="entrytext">Clean my room.</span>
-                <form class="check">
-                  <input
-                    type="checkbox"
-                    class="cbox"
-                    name="cbox"
-                    onclick="handleClick(this)"
-                    ondblclick="handleDblClick(this)"
-                  />
-                </form>
-              </li>-->
-            </ul>
+            <ul id="tasks"></ul>
           </div>
           <form id="form" class="text_box">
             <!--<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">-->
@@ -42,6 +30,24 @@
           </form>
         </div>
       </div>
+    </div>
+    <div class="music">
+      <input
+        type="checkbox"
+        id="play-music-button"
+        class="volume cbox"
+        onclick="editMusic()"
+      />
+      <img class="note" src="note.png" />
+      <button id="volumeUp" class="volume" onclick="volumeUp()">
+        <div class="cross">
+          <div class="crossVert cross"></div>
+        </div>
+      </button>
+      <button id="volumeDown" class="volume" onclick="volumeDown()">
+        <div class="cross"></div>
+      </button>
+      <audio id="music" onended="queueNext()"></audio>
     </div>
     <script src="app.js"></script>
   </body>

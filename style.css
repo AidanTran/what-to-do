@@ -14,7 +14,6 @@ body > div {
   position: absolute;
   width: 100vw;
 }
-
 .title {
   font-family: "Pacifico", cursive;
   color: rgb(48, 47, 45);
@@ -34,13 +33,16 @@ body > div {
   color: rgb(48, 47, 45);
 }
 
-#title_page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+#canvas {
+  position: absolute;
+  z-index: 0;
 }
 
 #title_page {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
 }
 

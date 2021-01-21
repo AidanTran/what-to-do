@@ -13,6 +13,9 @@ var fps, fpsInterval, startTime, now, then, elapsed, transCall;
 var initEntries = [];
 // initialize the timer variables and start the animation
 
+let trans = false;
+var input = document.getElementById("form");
+
 function startAnimating(fps) {
     canvas.style.zIndex = "1";
     fpsInterval = 1000 / fps;
@@ -36,7 +39,7 @@ function animate() {
 
     now = Date.now();
     elapsed = now - then;
-
+    console.log(elapsed);
     // if enough time has elapsed, draw the next frame
 
     if (elapsed > fpsInterval) {
@@ -98,11 +101,6 @@ function Blocker (x,y,c) {
     }
 }
 
-
-
-let trans = false;
-var input = document.getElementById("form");
-
 input.addEventListener("submit", function(e) {
     e.preventDefault();
     let textInputted = document.getElementById('input').value;
@@ -112,7 +110,7 @@ input.addEventListener("submit", function(e) {
         document.getElementById("input").value = "";
         if(!trans) {
             initEntries.push(textMeat);
-            startAnimating(60);
+            startAnimating(80);
         } else if (!transCall) {
             initEntries.push(textMeat);
         }else {

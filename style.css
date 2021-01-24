@@ -15,6 +15,18 @@ body > div {
   width: 100vw;
 }
 
+.reminderContent {
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+#reminderText {
+  opacity: 0;
+  transition: opacity 6s ease-in;
+}
+
 .music {
   width: 110px;
   height: 75px;
@@ -34,6 +46,7 @@ body > div {
 
 .volume {
   border-color: rgb(48, 47, 45);
+  background-color: white;
   border-style: solid;
   height: 30px;
   width: 30px;
@@ -46,10 +59,17 @@ body > div {
   background-color: rgb(225, 178, 160);
 }
 
+#volumeUp {
+  opacity: 0;
+  transition: opacity 1s;
+}
+
 #volumeDown {
   position: absolute;
   bottom: 0px;
   left: 0px;
+  opacity: 0;
+  transition: opacity 1s;
 }
 
 .cross {
@@ -64,7 +84,7 @@ body > div {
 .crossVert {
   height: 15px;
   width: 4px;
-  left: 6.5px;
+  left: 6px;
   top: -5.5px;
 }
 
@@ -113,8 +133,10 @@ body > div {
 
 ul {
   margin-left: 0;
-  padding-left: 2em;
+  list-style-type: none;
+  padding-inline-start: 0;
 }
+
 #content {
   text-align: center;
   width: 700px;
@@ -134,7 +156,27 @@ ul {
 
 .entry {
   position: relative;
+  height: auto;
+  opacity: 1;
+  transition: opacity 2s, margin-bottom 2s;
+  margin-bottom: 0;
 }
+
+.notransition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
+
+.entry::before {
+  content: "■";
+  vertical-align: top;
+  position: relative;
+  top: -0.1em;
+  padding-right: 0.5em;
+}
+
 .check {
   position: absolute;
   right: 0;
@@ -154,6 +196,7 @@ ul {
 
 #tasks {
   word-wrap: break-word;
+  min-height: 0.1px;
 }
 
 .cbox:active,
@@ -165,12 +208,40 @@ ul {
   background-color: hsl(17, 60%, 90%);
 }
 
+.checkmark {
+  -ms-transform: rotate(45deg); /* IE 9 */
+  -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+  transform: rotate(45deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.checkmark:before {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 9px;
+  background-color: rgb(48, 47, 45);
+  left: -2px;
+  top: -24px;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background-color: rgb(48, 47, 45);
+  left: -5px;
+  top: -18px;
+}
+
 .entrytext {
-  width: 19em;
+  width: 20em;
   word-wrap: break-word;
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
-  display: block; /* or block */
+  display: inline-block;
 }

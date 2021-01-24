@@ -18,7 +18,6 @@
             <ul id="tasks"></ul>
           </div>
           <form id="form" class="text_box">
-            <!--<a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">-->
             <input
               type="text"
               name="input"
@@ -26,10 +25,13 @@
               placeholder="Enter your first task!"
               autocomplete="off"
               class="text"
-            /><!--</a>-->
+            />
           </form>
         </div>
       </div>
+    </div>
+    <div class="reminderContent">
+      <p class="text" id="reminderText">Double click to remove entries</p>
     </div>
     <div class="music">
       <input
@@ -39,12 +41,16 @@
         onclick="editMusic()"
       />
       <img class="note" src="note.png" />
-      <button id="volumeUp" class="volume" onclick="volumeUp()">
+      <button id="volumeUp" class="volume volumeChange" onclick="volumeUp()">
         <div class="cross">
           <div class="crossVert cross"></div>
         </div>
       </button>
-      <button id="volumeDown" class="volume" onclick="volumeDown()">
+      <button
+        id="volumeDown"
+        class="volume volumeChange"
+        onclick="volumeDown()"
+      >
         <div class="cross"></div>
       </button>
       <audio id="music" onended="queueNext()"></audio>

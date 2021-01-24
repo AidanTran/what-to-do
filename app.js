@@ -4,25 +4,41 @@ canvas = document.getElementById('canvas');
 canvas.width  = canWidth;
 canvas.height = canHeight;
 const ctx = canvas.getContext('2d');
-var blockerRect = new Blocker(-698,-canHeight * 2, "rgb(48, 47, 45)")
+var blockerRect = new Blocker(-698,-canHeight * 2, "rgb(48, 47, 45)");
 
-let isPlay;
-var arrMusic = []
-let currMusic = 0;
+var isPlay;
+var arrMusic = [];
+var currMusic = 0;
 
 var stop = false;
 var frameCount = 0;
-var fps, fpsInterval, startTime, now, then, elapsed, transCall;
+var fps, fpsInterval, startTime, now, then, elapsed, transCall, reminderTextCall, trans, loading;
 var initEntries = [];
+
+var entriesArray = [];
+if (localStorage.getItem('toDoList')) {
+    entriesArray = JSON.parse(localStorage.getItem('toDoList'));
+    localStorage.setItem('toDoList', JSON.stringify(entriesArray));
+    transition();
+    trans = true;
+    transCall = true;
+    loading = true;
+    for (let i = 0; i < entriesArray.length; i++) {
+        addList(entriesArray[i][0],entriesArray[i][1]);
+    }
+    loading = false;
+}
+
 // initialize the timer variables and start the animation
 
-let trans = false;
 var input = document.getElementById("form");
 
 arrMusic.push('jazz1.mp3');
 arrMusic.push('jazz2.mp3');
 arrMusic.push('jazz3.mp3');
 var audioHTML = document.getElementById('music');
+audioHTML.volume = .5;
+//var audio = new Audio('clickNoise.mp3');
 shuffle(arrMusic);
 
 function startAnimating(fps) {
@@ -68,7 +84,11 @@ function animate() {
         if (xCord > canWidth*1.5) {
             stop = true;
             ctx.clearRect(0,0, canWidth, canHeight);
-        } else if (xCord > canWidth * .3 && !transCall) {
+        } else if (xCord > canWidth * .4 && !reminderTextCall) {
+            reminderUpdate();
+            reminderTextCall = true;
+        }
+        else if (xCord > canWidth * .3 && !transCall) {
             transition();
             transCall = true;
         }
@@ -76,7 +96,19 @@ function animate() {
     }
 }
 
+function reminderUpdate() {
+    let reminderText = document.getElementById("reminderText");
+    reminderText.classList.add('notransition'); // Disable transitions
+    reminderText.style.opacity = 1;
+    reminderText.offsetHeight; // Trigger a reflow, flushing the CSS changes
+    reminderText.classList.remove('notransition'); // Re-enable transitions
+    requestAnimationFrame(function() {
+        reminderText.style.opacity = 0;
+    })
+}
+
 function transition() {
+    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     let titleScreen = document.getElementById("title_page");
     let content = document.getElementById("nonTitleContent");
     let inputBox = document.getElementById("input");
@@ -86,7 +118,7 @@ function transition() {
     inputBox.style.width = "25em";
     content.style.textAlign = "left";
     titleScreen.style.minHeight = "10vh";
-    initEntries.forEach(item => addList(item));
+    initEntries.forEach(item => addList(item, 1));
 }
 
 function Blocker (x,y,c) {
@@ -111,13 +143,23 @@ function Blocker (x,y,c) {
     }
 }
 
+function playClick() {
+    let audio = new Audio('clickNoise.mp3');
+    audio.volume = .5;
+    audio.play(); 
+}
+
 function editMusic() {
     if (isPlay) {
         audioHTML.pause();
         isPlay = false;
+        document.getElementById('volumeUp').style.opacity = 0;
+        document.getElementById('volumeDown').style.opacity = 0;
     } else {
         audioHTML.play();
         isPlay = true;
+        document.getElementById('volumeUp').style.opacity = 1;
+        document.getElementById('volumeDown').style.opacity = 1;
     }
     
 }
@@ -125,12 +167,14 @@ function editMusic() {
 function volumeUp() {
     if(audioHTML.volume!= 1) {
         audioHTML.volume= Math.round((audioHTML.volume+ .1) * 10) / 10;
+        playClick();
     }
 }
 
 function volumeDown() {
     if(audioHTML.volume!= .1) {
         audioHTML.volume= Math.round((audioHTML.volume- .1) * 10) / 10;
+        playClick();
     }
 }
 
@@ -140,11 +184,11 @@ function queueNext() {
     audioHTML.play();
 }
 
+
 input.addEventListener("submit", function(e) {
     e.preventDefault();
     let textInputted = document.getElementById('input').value;
     let textMeat = textInputted.trim();
-    //window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     if (textMeat != "") {
         document.getElementById("input").value = "";
         if(!trans) {
@@ -153,37 +197,80 @@ input.addEventListener("submit", function(e) {
         } else if (!transCall) {
             initEntries.push(textMeat);
         }else {
-            addList(textMeat);
+            addList(textMeat, 1);
         }
         trans = true;
     }
 });
 
-function addList(text) {
+function updateUl() {
+    let tempArray = document.getElementsByClassName('entry');
+    if (tempArray.length > 0) {
+        let tempArray2 = [];
+        for (let i = 0; i < tempArray.length; i++) {
+            tempArray2.push([tempArray[i].firstChild.textContent, tempArray[i].firstChild.style.textDecoration])
+        }
+        entriesArray = tempArray2;
+        localStorage.setItem('toDoList', JSON.stringify(entriesArray));
+    } else {
+        localStorage.clear();
+    }
+}
+
+function addList(text, textDec) {
     listItem = document.createElement('li');
     listItem.className = "entry";
     text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     listItem.innerHTML = "<span class = 'entrytext'>" + text;
-    listItem.innerHTML += "<form class='check'><input type='checkbox' class='cbox' name='cbox' onclick='handleClick(this)' ondblclick='handleDblClick(this)'/></form>"
+    listItem.innerHTML += "<form class='check'><input type='checkbox' class='cbox' name='cbox' onclick='handleClick(this)' ondblclick='handleDblClick(this)'/><div class='checkmark'></div></form>";
     listElement = document.getElementById("tasks");
     listElement.appendChild(listItem);
+    if(textDec != 1) {
+        if (textDec == "line-through") {
+            listItem.firstChild.style.textDecoration = textDec;
+            listItem.getElementsByClassName("checkmark")[0].style.opacity = 1;
+            listItem.lastElementChild.firstChild.checked = true;
+        }
+    }
+    if(transCall && !loading) {
+        updateUl();
+        var margin = listItem.clientHeight;
+        listItem.classList.add('notransition'); // Disable transitions
+        listItem.style.marginBottom = "-" + margin + "px";
+        listItem.style.opacity = 0;
+        listItem.offsetHeight; // Trigger a reflow, flushing the CSS changes
+        listItem.classList.remove('notransition'); // Re-enable transitions
+        requestAnimationFrame(function() {
+            listItem.style.opacity = 1;
+            listItem.style.marginBottom = 0;
+        })
+    }
 }
 
 function handleClick(cb) {
     var form = cb.form;
     var entry = form.parentElement;
-    let decoration = entry.getElementsByClassName("entrytext")[0].style.textDecoration;
+    playClick();
+    let entryStyle = entry.firstChild;
+    let decoration = entryStyle.style.textDecoration;
     if (decoration == "line-through") {
-        entry.getElementsByClassName("entrytext")[0].style.textDecoration = "none";
+        entryStyle.style.textDecoration = "";
+        entry.getElementsByClassName("checkmark")[0].style.opacity = 0;
     } else {
-        entry.getElementsByClassName("entrytext")[0].style.textDecoration = "line-through";
+        entryStyle.style.textDecoration = "line-through";
+        entry.getElementsByClassName("checkmark")[0].style.opacity = 1;
     }
+    updateUl();
   }
 
 function handleDblClick(cb) {
     var form = cb.form;
     var entry = form.parentElement;
-    entry.remove();
+    var margin = entry.clientHeight;
+    entry.style.opacity = 0;
+    entry.style.marginBottom = "-" + margin + "px";;
+    //entriesArray.remove();
+    setTimeout(function() { entry.remove(); updateUl(); }, 2000);
 }
 
 function shuffle(array) {

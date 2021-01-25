@@ -104,11 +104,11 @@ function reminderUpdate() {
     reminderText.classList.remove('notransition'); // Re-enable transitions
     requestAnimationFrame(function() {
         reminderText.style.opacity = 0;
-    })
+    });
 }
 
 function transition() {
-    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    //window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     let titleScreen = document.getElementById("title_page");
     let content = document.getElementById("nonTitleContent");
     let inputBox = document.getElementById("input");
@@ -133,14 +133,14 @@ function Blocker (x,y,c) {
         ctx.fillStyle = this.c;
         ctx.save();
         ctx.rotate(Math.PI/6);
-        ctx.fillRect(this.x,this.y,698, canHeight*5)
+        ctx.fillRect(this.x,this.y,698, canHeight*5);
         ctx.restore();
-    }
+    };
     
     this.animate = function() {
-        this.x += this.dx
+        this.x += this.dx;
         this.draw();
-    }
+    };
 }
 
 function playClick() {
@@ -153,13 +153,13 @@ function editMusic() {
     if (isPlay) {
         audioHTML.pause();
         isPlay = false;
-        document.getElementById('volumeUp').style.opacity = 0;
-        document.getElementById('volumeDown').style.opacity = 0;
+        document.getElementById('musicControl').style.opacity = 0;
+        document.getElementById('musicControl').style.pointerEvents = "none";
     } else {
         audioHTML.play();
         isPlay = true;
-        document.getElementById('volumeUp').style.opacity = 1;
-        document.getElementById('volumeDown').style.opacity = 1;
+        document.getElementById('musicControl').style.opacity = 1;
+        document.getElementById('musicControl').style.pointerEvents = "auto";
     }
     
 }
@@ -189,7 +189,7 @@ input.addEventListener("submit", function(e) {
     e.preventDefault();
     let textInputted = document.getElementById('input').value;
     let textMeat = textInputted.trim();
-    if (textMeat != "") {
+    if (textMeat !== "") {
         document.getElementById("input").value = "";
         if(!trans) {
             initEntries.push(textMeat);
@@ -208,7 +208,7 @@ function updateUl() {
     if (tempArray.length > 0) {
         let tempArray2 = [];
         for (let i = 0; i < tempArray.length; i++) {
-            tempArray2.push([tempArray[i].firstChild.textContent, tempArray[i].firstChild.style.textDecoration])
+            tempArray2.push([tempArray[i].firstChild.textContent, tempArray[i].firstChild.style.textDecoration]);
         }
         entriesArray = tempArray2;
         localStorage.setItem('toDoList', JSON.stringify(entriesArray));
@@ -218,12 +218,12 @@ function updateUl() {
 }
 
 function addList(text, textDec) {
-    listItem = document.createElement('li');
+    let listItem = document.createElement('li');
     listItem.className = "entry";
     text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     listItem.innerHTML = "<span class = 'entrytext'>" + text;
     listItem.innerHTML += "<form class='check'><input type='checkbox' class='cbox' name='cbox' onclick='handleClick(this)' ondblclick='handleDblClick(this)'/><div class='checkmark'></div></form>";
-    listElement = document.getElementById("tasks");
+    let listElement = document.getElementById("tasks");
     listElement.appendChild(listItem);
     if(textDec != 1) {
         if (textDec == "line-through") {
@@ -268,8 +268,7 @@ function handleDblClick(cb) {
     var entry = form.parentElement;
     var margin = entry.clientHeight;
     entry.style.opacity = 0;
-    entry.style.marginBottom = "-" + margin + "px";;
-    //entriesArray.remove();
+    entry.style.marginBottom = "-" + margin + "px";
     setTimeout(function() { entry.remove(); updateUl(); }, 2000);
 }
 

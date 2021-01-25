@@ -40,19 +40,22 @@
         class="volume cbox"
         onclick="editMusic()"
       />
-      <img class="note" src="note.png" />
-      <button id="volumeUp" class="volume volumeChange" onclick="volumeUp()">
-        <div class="cross">
-          <div class="crossVert cross"></div>
-        </div>
-      </button>
-      <button
-        id="volumeDown"
-        class="volume volumeChange"
-        onclick="volumeDown()"
-      >
+      <img class="note" src="note.png" alt="music note" />
+      <div id="musicControl">
         <div class="cross"></div>
-      </button>
+        <div class="crossVert cross"></div>
+        <button
+          id="volumeUp"
+          class="volume volumeChange"
+          onclick="volumeUp()"
+        ></button>
+        <div class="cross bottom"></div>
+        <button
+          id="volumeDown"
+          class="volume volumeChange"
+          onclick="volumeDown()"
+        ></button>
+      </div>
       <audio id="music" onended="queueNext()"></audio>
     </div>
     <script src="app.js"></script>

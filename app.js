@@ -108,7 +108,7 @@ function reminderUpdate() {
 }
 
 function transition() {
-    //window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     let titleScreen = document.getElementById("title_page");
     let content = document.getElementById("nonTitleContent");
     let inputBox = document.getElementById("input");

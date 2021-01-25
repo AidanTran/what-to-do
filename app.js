@@ -38,7 +38,6 @@ arrMusic.push('jazz2.mp3');
 arrMusic.push('jazz3.mp3');
 var audioHTML = document.getElementById('music');
 audioHTML.volume = .5;
-//var audio = new Audio('clickNoise.mp3');
 shuffle(arrMusic);
 
 function startAnimating(fps) {
@@ -108,7 +107,6 @@ function reminderUpdate() {
 }
 
 function transition() {
-    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     let titleScreen = document.getElementById("title_page");
     let content = document.getElementById("nonTitleContent");
     let inputBox = document.getElementById("input");

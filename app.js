@@ -223,6 +223,9 @@ function addList(text, textDec) {
     listItem.innerHTML += "<form class='check'><input type='checkbox' class='cbox' name='cbox' onclick='handleClick(this)' ondblclick='handleDblClick(this)'/><div class='checkmark'></div></form>";
     let listElement = document.getElementById("tasks");
     listElement.appendChild(listItem);
+    if(textDec == 1) {
+        updateUl();
+    }
     if(textDec != 1) {
         if (textDec == "line-through") {
             listItem.firstChild.style.textDecoration = textDec;
@@ -231,7 +234,6 @@ function addList(text, textDec) {
         }
     }
     if(transCall && !loading) {
-        updateUl();
         var margin = listItem.clientHeight;
         listItem.classList.add('notransition'); // Disable transitions
         listItem.style.marginBottom = "-" + margin + "px";

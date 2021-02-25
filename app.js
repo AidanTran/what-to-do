@@ -8,7 +8,7 @@ var blockerRect = new Blocker(-698,-canHeight * 2, "rgb(48, 47, 45)");
 
 var isPlay;
 var arrMusic = [];
-var currMusic = 0;
+var currMusic = Math.floor(Math.random() * Math.floor(3));
 
 var stop = false;
 var frameCount = 0;
@@ -38,7 +38,7 @@ arrMusic.push('jazz2.mp3');
 arrMusic.push('jazz3.mp3');
 var audioHTML = document.getElementById('music');
 audioHTML.volume = .5;
-shuffle(arrMusic);
+audioHTML.src = arrMusic[currMusic];
 
 function startAnimating(fps) {
     canWidth = window.innerWidth + 2;
@@ -87,7 +87,7 @@ function animate() {
             reminderUpdate();
             reminderTextCall = true;
         }
-        else if (xCord > canWidth * .3 && !transCall) {
+        else if (xCord > canWidth * .34 && !transCall) {
             transition();
             transCall = true;
         }
@@ -124,7 +124,7 @@ function Blocker (x,y,c) {
     this.y = y;
     this.c = c;
 
-    this.dx = 25;
+    this.dx = 20;
 
     this.draw = function() {
         ctx.beginPath();
@@ -155,6 +155,7 @@ function editMusic() {
         document.getElementById('musicControl').style.pointerEvents = "none";
     } else {
         audioHTML.play();
+        console.log("huh?");
         isPlay = true;
         document.getElementById('musicControl').style.opacity = 1;
         document.getElementById('musicControl').style.pointerEvents = "auto";
@@ -191,7 +192,7 @@ input.addEventListener("submit", function(e) {
         document.getElementById("input").value = "";
         if(!trans) {
             initEntries.push(textMeat);
-            startAnimating(60);
+            startAnimating(10);
         } else if (!transCall) {
             initEntries.push(textMeat);
         }else {
@@ -219,7 +220,7 @@ function addList(text, textDec) {
     let listItem = document.createElement('li');
     listItem.className = "entry";
     text = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    listItem.innerHTML = "<span class = 'entrytext'>" + text;
+    listItem.innerHTML = "<span class = 'entrytext' onclick='handleClick(this)' ondblclick='handleDblClick(this)'>" + text;
     listItem.innerHTML += "<form class='check'><input type='checkbox' class='cbox' name='cbox' onclick='handleClick(this)' ondblclick='handleDblClick(this)'/><div class='checkmark'></div></form>";
     let listElement = document.getElementById("tasks");
     listElement.appendChild(listItem);
@@ -230,6 +231,7 @@ function addList(text, textDec) {
         if (textDec == "line-through") {
             listItem.firstChild.style.textDecoration = textDec;
             listItem.getElementsByClassName("checkmark")[0].style.opacity = 1;
+            listItem.getElementsByClassName("cbox")[0].style.backgroundColor = 'rgb(245, 223, 214)';
             listItem.lastElementChild.firstChild.checked = true;
         }
     }
@@ -247,45 +249,52 @@ function addList(text, textDec) {
     }
 }
 
-function handleClick(cb) {
-    var form = cb.form;
-    var entry = form.parentElement;
+function handleClick(obj) {
     playClick();
-    let entryStyle = entry.firstChild;
-    let decoration = entryStyle.style.textDecoration;
-    if (decoration == "line-through") {
-        entryStyle.style.textDecoration = "";
-        entry.getElementsByClassName("checkmark")[0].style.opacity = 0;
+    if(obj.type == "checkbox") { 
+    console.log(obj.type);
+        var form = obj.form;
+        var entry = form.parentElement;
+        let entryStyle = entry.firstChild;
+        let decoration = entryStyle.style.textDecoration;
+        if (decoration == "line-through") {
+            entryStyle.style.textDecoration = "";
+            entry.getElementsByClassName("checkmark")[0].style.opacity = 0;
+            obj.parentElement.getElementsByClassName("cbox")[0].style.backgroundColor = '#ffffff';
+        } else {
+            entryStyle.style.textDecoration = "line-through";
+            entry.getElementsByClassName("checkmark")[0].style.opacity = 1;
+            obj.parentElement.getElementsByClassName("cbox")[0].style.backgroundColor = 'rgb(245, 223, 214)';
+        }
     } else {
-        entryStyle.style.textDecoration = "line-through";
-        entry.getElementsByClassName("checkmark")[0].style.opacity = 1;
+        let decoration = obj.style.textDecoration;
+        if (decoration == "line-through") {
+            obj.style.textDecoration = "";
+            obj.parentElement.getElementsByClassName("checkmark")[0].style.opacity = 0;
+            obj.parentElement.getElementsByClassName("cbox")[0].style.backgroundColor = '#ffffff';
+        } else {
+            obj.style.textDecoration = "line-through";
+            obj.parentElement.getElementsByClassName("checkmark")[0].style.opacity = 1;
+            obj.parentElement.getElementsByClassName("cbox")[0].style.backgroundColor = 'rgb(245, 223, 214)';
+        }
     }
     updateUl();
   }
 
-function handleDblClick(cb) {
-    var form = cb.form;
-    var entry = form.parentElement;
-    var margin = entry.clientHeight;
-    entry.style.opacity = 0;
-    entry.style.marginBottom = "-" + margin + "px";
-    setTimeout(function() { entry.remove(); updateUl(); }, 2000);
+function handleDblClick(obj) {
+    if(obj.type == "checkbox") { 
+        var form = obj.form;
+        var entry = form.parentElement;
+        var margin = entry.clientHeight;
+        entry.style.opacity = 0;
+        entry.style.marginBottom = "-" + margin + "px";
+        setTimeout(function() { entry.remove(); updateUl(); }, 2000);
+    } else {
+        var entry = obj.parentElement;
+        var margin = entry.clientHeight;
+        entry.style.opacity = 0;
+        entry.style.marginBottom = "-" + margin + "px";
+        setTimeout(function() { entry.remove(); updateUl(); }, 2000);
+    }
 }
 
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-  
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-  
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-    audioHTML.src = array[0];
-    return array;
-  }

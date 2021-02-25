@@ -214,7 +214,7 @@ ul {
 }
 
 .cbox:checked {
-  background-color: hsl(17, 60%, 90%);
+  background-color: rgb(245, 223, 214);
 }
 
 .checkmark {

@@ -4,7 +4,7 @@ canvas = document.getElementById('canvas');
 canvas.width  = canWidth;
 canvas.height = canHeight;
 const ctx = canvas.getContext('2d');
-var blockerRect = new Blocker(-698,-canHeight * 2, "rgb(48, 47, 45)");
+var blockerRect = new Blocker(-750,-canHeight * 2, "rgb(48, 47, 45)");
 
 var isPlay;
 var arrMusic = [];
@@ -87,7 +87,7 @@ function animate() {
             reminderUpdate();
             reminderTextCall = true;
         }
-        else if (xCord > canWidth * .34 && !transCall) {
+        else if (xCord > canWidth * .33 && !transCall) {
             transition();
             transCall = true;
         }
@@ -124,14 +124,14 @@ function Blocker (x,y,c) {
     this.y = y;
     this.c = c;
 
-    this.dx = 25;
+    this.dx = 20;
 
     this.draw = function() {
         ctx.beginPath();
         ctx.fillStyle = this.c;
         ctx.save();
         ctx.rotate(Math.PI/6);
-        ctx.fillRect(this.x,this.y,698, canHeight*5);
+        ctx.fillRect(this.x,this.y,750, canHeight*5);
         ctx.restore();
     };
     

@@ -124,7 +124,7 @@ function Blocker (x,y,c) {
     this.y = y;
     this.c = c;
 
-    this.dx = 20;
+    this.dx = 25;
 
     this.draw = function() {
         ctx.beginPath();
@@ -192,7 +192,7 @@ input.addEventListener("submit", function(e) {
         document.getElementById("input").value = "";
         if(!trans) {
             initEntries.push(textMeat);
-            startAnimating(10);
+            startAnimating(60);
         } else if (!transCall) {
             initEntries.push(textMeat);
         }else {
